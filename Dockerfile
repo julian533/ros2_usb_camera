@@ -1,5 +1,5 @@
 # Use ubuntu 20.04
-FROM osrf/ros:eloquent-desktop
+FROM ros:eloquent-ros-base
 LABEL maintainer="Julian Narr"
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -14,6 +14,9 @@ RUN apt-get install -y python3 python3-pip libboost-dev lcov
 RUN pip3 install colcon-lcov-result
 RUN apt-get -y install cmake python-catkin-pkg python-empy python-nose python-setuptools libgtest-dev build-essential
 RUN pip3 install cpplint
+RUN apt-get install -y libyaml-cpp-dev 
+RUN apt-get install -y ros-eloquent-camera-info-manager
+RUN apt-get install -y libopencv-dev
 
 # Finish colcon-common-extensions
 RUN pip3 install colcon-common-extensions
