@@ -1,5 +1,5 @@
 # Use ubuntu 20.04
-FROM ubuntu:18.04
+FROM osrf/ros:eloquent-desktop
 LABEL maintainer="Julian Narr"
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -7,23 +7,6 @@ RUN apt-get update -q && \
     apt-get upgrade -yq && \
     apt-get install -yq wget curl git build-essential vim sudo lsb-release locales bash-completion tzdata &&\
     apt-get install -yq apt-transport-https
-
-# Run and install ros2: eluqent
-RUN apt install -y curl gnupg lsb-release
-RUN curl -Ls https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
-RUN sh -c 'echo "deb [arch=amd64,arm64] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
-RUN apt update
-RUN apt install -y ros-eloquent-desktop
-RUN apt install -y python3-argcomplete
-RUN apt install -y python3-rosdep python3-vcstool # https://index.ros.org/doc/ros2/Installation/Linux-Development-Setup/
-RUN grep -F "source /opt/ros/eloquent/setup.bash" ~/.bashrc || echo "source /opt/ros/eloquent/setup.bash" >> ~/.bashrc
-RUN grep -F ". /opt/ros/eloquent/setup.bash" ~/.bashrc || echo ". /opt/ros/eloquent/setup.bash" >> ~/.bashrc
-RUN set +u
-
-# Source ros foxy setup-file
-RUN /bin/bash -c "source /opt/ros/eloquent/setup.bash"
-RUN echo "Success installing ROS2 eloquent"
-RUN git config --global http.postBuffer 524288000
 
 # Install doxygen, cpplint + python packages
 RUN apt-get install -y doxygen
@@ -41,6 +24,7 @@ RUN pip3 install -U PyYAML
 RUN pip3 install numpy
 RUN pip3 install natsort
 RUN pip3 install opencv-python 
+
 # install opencv
 WORKDIR /root
 RUN mkdir opencv_build
@@ -78,6 +62,9 @@ Run cd ros2_usb_camera
 #Run colcon build --symlink-install
 #RUN /bin/bash -c "source ./install/setup.bash"
 
+#Install  image_transport_plugins
+WORKDIR /root
+Run git clone https://github.com/ros-perception/image_transport_plugins.git
 
 # Reset workdir to home-folder
 WORKDIR /root
