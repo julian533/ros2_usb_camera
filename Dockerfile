@@ -17,6 +17,7 @@ RUN pip3 install cpplint
 RUN apt-get install -y libyaml-cpp-dev 
 RUN apt-get install -y ros-eloquent-camera-info-manager
 RUN apt-get install -y libopencv-dev
+RUN apt install libboost-all-dev
 
 # Finish colcon-common-extensions
 RUN pip3 install colcon-common-extensions
